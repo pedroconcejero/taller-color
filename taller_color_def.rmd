@@ -1,0 +1,653 @@
+---
+title: "talleR peRcepcion del coloR VI joRnadas R-hispano"
+author: "pedro.concejerocerezo at telefonica.com"
+date: "Viernes 24 de octubre, 2014"
+output: word_document
+---
+
+GRACIAS!!
+========================================================
+
+- A los organizadores de estas nuestras (maravillosas) Jornadas de Usuarios R
+
+- A los miembros del comité científico que (inexplicablemente) aprobaron el taller
+
+- A José Antonio Collado, el experto sobre color autor de las recomendaciones y ejercicios y de la base teórica de este taller, pero que no ha podido asistir a las jornadas
+
+- A José Antonio Cañadas (<https://twitter.com/joscani>) por sus mapas (<http://rpubs.com/joscani/mapa_paro_andalucia>)
+
+- A Miguel Fiandor (<https://twitter.com/mfiandor>) por sus ejemplos enviados a la lista R-hispano, en concreto esta que comentaremos (criticaremos): <http://www.elconfidencial.com/espana/2014-08-07/nueve-de-cada-diez-municipios-tienen-mas-paro-ahora-que-antes-de-comenzar-la-crisis_172665/>
+
+
+
+OBJETIVOS DE ESTE DOCUMENTO
+========================================================
+
+Este documento es la documentación para el talleR de coloR dentro de las jornadas R-hispano 2014:
+
+<http://r-es.org/item1151?structure=Comunidad&from=VI+Jornadas>
+
+Dado que el taller está dirigido a la comunidad R, todo el código está en este lenguaje, aunque intentaremos que las recomendaciones sean suficientemente generales para cualquier lenguaje que permita manejar el color. De hecho se añade un apéndice con enlaces a información relevante para python.
+
+
+RESUMEN DEL TALLER
+=================
+Resumen
+
+El color es una más de entre las posibles características que pueden convertir un gráfico, una visualización, un sistema interactivo de análisis de datos en algo eficaz y atractivo o por el contrario hacer que esa misma visualización sea poco agradable, o, en algunos casos, más confusa que si se utilizan otras características visuales.
+
+La disponibilidad actual de sistemas para manejar con práctica total libertad el color en las visualizaciones (por ejemplo en pantallas o proyectores) o impresiones no ha ido acompañada de recomendaciones sobre cómo optimizar el uso del mismo. De hecho, muchas tareas de manejo de los colores han pasado de auténticos expertos (por ejemplo diseñadores gráficos y técnicos de impresión) directamente a los generadores de los gráficos, con el riesgo de que una herramienta potentísima de comunicación no sea utilizada de la mejor manera.
+
+En el mundo R hay multitud de tutoriales, guías, publicaciones de todo tipo para manejar el color desde un punto de vista técnico. De hecho, R es probablemente el entorno más potente para gestionar el color en un sistema informático dedicado al análisis de datos del que dispone un investigador en estos momentos. Sin embargo es difícil encontrar recomendaciones sobre el uso eficaz del color basadas en criterios científicos y ergonómicos.
+
+La visión del color por los humanos es un campo multidisciplinar bien conocido que ha generado un amplio conocimiento, tanto desde el punto de vista científico como tecnológico. Nuestra propuesta es desarrollar un taller para trasladar este conocimiento a los expertos en R que desarrollan visualizaciones, de cualquier tipo, desde simples gráficos estáticos en una pantalla o proyector modernos, a gráficos interactivos en dispositivos móviles o impresiones -en este último caso con una simplificación fundamental, porque no podremos abordar la impresión profesional propiamente dicha.
+
+
+DOCUMENTACIÓN PREVIA
+========================================================
+
+DOCUMENTACIÓN DISPONIBLE EN INTERNET Y QUE USAREMOS EN EL TALLER
+
+- Tabla completa de colores y nombres en R 
+  <http://research.stowers-institute.org/efg/R/Color/Chart/ColorChart.pdf>
+  
+  obtenida a partir de esto:
+  <http://research.stowers-institute.org/efg/R/Color/Chart/ColorChart.R>
+  
+- Using Color in R (ver "Los números del color")
+  <http://research.stowers-institute.org/efg/Report/UsingColorInR.pdf>
+  
+- Color Brewer web site
+  <http://colorbrewer2.org/>
+  
+- Color Scales, some further info
+  <http://geog.uoregon.edu/datagraphics/color_scales.htm>
+  
+- Recopilación *completísima* de ciencia del color
+  <http://www.efg2.com/Lab/Library/Color/Science.htm>
+  
+  y en concreto sobre "Color and Computers"
+  
+  <http://www.efg2.com/Lab/Library/Color/AndComputers.htm>
+  
+  e info general inc. ceguera al color ("daltonismo")
+  
+  <http://www.efg2.com/Lab/Library/Color/index.html>
+  
+- Sobre ceguera al color:
+  - <http://colororacle.org/design.html>
+
+- Regla 6 "Use Color Effectively" de "Ten Simple Rules for Better Figures"
+  - <http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003833#s7>
+
+PREPARACIÓN DE ENTORNO R
+==========================
+
+**MUY IMPORTANTE PON TU DIRECTORIO DE TRABAJO**
+
+```{r}
+
+# Ojo pongo mi directorio de trabajo, tú pon el tuyo
+
+setwd("C:/Users/pedroc/Desktop/repos-git-2014/taller-color")
+
+
+```
+
+Si es necesario, instalemos librerías requeridas.
+
+```{r}
+
+# Inicialización
+# Comprueba si están y si no instala librerías
+
+if ("sos" %in% row.names(installed.packages())  == FALSE) install.packages("sos", dependencies = T)
+if ("colortools" %in% row.names(installed.packages())  == FALSE) install.packages("colortools", dependencies = T)
+if ("dichromat" %in% row.names(installed.packages())  == FALSE) install.packages("dichromat", dependencies = T)
+if ("RColorBrewer" %in% row.names(installed.packages())  == FALSE) install.packages("RColorBrewer", dependencies = T)
+if ("vcd" %in% row.names(installed.packages())  == FALSE) install.packages("vcd", dependencies = T)
+if ("maptools" %in% row.names(installed.packages())  == FALSE) install.packages("maptools", dependencies = T)
+if ("sp" %in% row.names(installed.packages())  == FALSE) install.packages("sp", dependencies = T)
+if ("classInt" %in% row.names(installed.packages())  == FALSE) install.packages("classInt", dependencies = T)
+if ("ggmap" %in% row.names(installed.packages())  == FALSE) install.packages("ggmap", dependencies = T)
+
+
+# Cargamos librerías que vamos a usar
+library(colortools)
+library(sos)
+library(dichromat)
+library(RColorBrewer)
+
+# Para dibujar mosaicos
+library(vcd)
+
+# Para dibujar los mapas
+library(maptools)
+library(sp)
+library(classInt)
+library(ggmap)  # tb carga ggplot2
+
+```
+
+
+POR QUÉ R ES EL MEJOR SISTEMA ACTUAL (EN CAMPO ESTADÍSTICA) PARA MANEJO DE COLOR
+========================================================
+
+Veamos qué librerías contienen color (sos levanta una página html fuera de RStudio, con enlaces a la documentación de las funciones encontradas)
+
+
+```{r}
+
+sos::findFn("{color}")
+
+
+```
+
+Hay 359 funciones en 158 paquetes CRAN para estudiar o manejar color en R.
+
+Tenemos por ejemplo la librería colorscience
+
+<http://finzi.psych.upenn.edu/R/library/colorscience/html/00Index.html>
+
+y la colortools
+<http://gastonsanchez.com/colortools/>
+
+"colortools is an R package designed to help users generate color schemes and color palettes. It provides a number of handy functions that will allow to select and play with *colors in an HSV (hue, saturation, value) color model*".
+
+La librería colortools es fascinante. Por ejemplo, podemos hacer ruedas de color con un número variable de "gajos" o colores en la escala entre los extremos con la función wheel:
+
+```{r}
+
+colortools::wheel("blue", num = 6)
+
+colortools::wheel("red", num = 12)
+
+colortools::wheel("yellow", num = 24)
+
+```
+
+1. COLOR Y ENTORNO FÍSICO
+============================
+
+En la percepción del color, el entorno físico y dispositivo que genera el color son clave.
+
+Muy importante:
+- Luz emitida (p.ej. monitor LCD-TFT) vs. luz reflejada (p.ej., proyector)
+- Color y contraste.
+
+La función colortools::adjacent permite generar esquemas de color que están próximos unos a otros. 
+
+
+```{r}
+
+colortools::adjacent("blue")
+
+colortools::adjacent("green")
+
+colortools::adjacent("khaki")
+
+```
+
+2. LOS NÚMEROS DEL COLOR
+==========================
+
+Ver excelente presentación aquí:   <http://research.stowers-institute.org/efg/Report/UsingColorInR.pdf>
+
+Nosotros utilizaremos el modelo de color HSV. En este modelo el color se puede representar "casi" como una circunferencia:
+<http://www.handprint.com/HP/WCL/IMG/conesps3.gif>
+
+Siempre podemos pasar de color RGB a color HSV
+
+```{r}
+
+rgb2hsv(col2rgb("blue"))
+
+rgb2hsv(col2rgb("khaki"))
+
+```
+
+
+3. PERCEPCIÓN DEL COLOR - COLOR Y PSICOFÍSICA Y PSICOLOGÍA
+=============================================================
+
+¿Cómo percibimos ese atributo físico que es el color?
+Antes de nada, ¿el color existe en la naturaleza? ¿Necesitamos el color para poder manejarnos en el mundo?
+
+Para manejarnos en el mundo lo que necesitamos es contraste. El color *no* es necesario.
+<http://en.wikipedia.org/wiki/Contrast_%28vision%29>
+
+Funciones de sensibilidad al contraste en color:
+<http://www.handprint.com/HP/WCL/IMG/conesens4.gif>
+
+El color es una propiedad física de la luz emitida o reflejada por los objetos. Pero es esencial saber que el color que nosotros percibimos es una construcción de nuestro sistema cognitivo.
+
+En Psicofísica se utilizan las ilusiones como herramienta de trabajo. Veamos una excelente representación de estas ilusiones de color:
+<http://www.purveslab.net/seeforyourself/>
+
+
+*Incluir un código para ilustrar el CONTRASTE DE COLOR*
+
+Recomendaciones:
+
+- Antes de fijar los colores en una visualización: maximizar el contraste -> elegir fondo!
+
+- Color *no puede ser la única clave* (veremos más adelante razones adicionales)
+
+- Humanos somos relativamente malos para distinciones finas de color (matiz)
+
+- No todos los colores se ven igual: recomendaciones sobre el azul en concreto
+
+- Evitar que canales entre en conflicto. Efecto "cromoestereopsis"
+
+- <http://en.wikipedia.org/wiki/User:Karam91/Chromostereopsis>
+
+- <http://desdag.blogspot.com.es/2012/05/chromostereopsis-design-fails-due-to.html>
+
+- aunque ocasional y muy cuidadosamente se puede usar con beneficio
+
+<http://www.luminanze.com/writings/chromostereopsis_in_ux_design.html>
+    
+4. COLOR Y MEMORIA Y SEMÁNTICA
+==============================
+
+**Aquí haremos un ejercicio práctico de memoria que por motivos obvios no se puede publicar previamente. Después de haberlo hecho subiremos el código**
+
+La memoria humana es relativamente bien conocida, y hay un principio muy bien establecido (muy a menudo demasiado simplificado) que describe la denominada "memoria a corto plazo", una especie de "buffer" de entrada a partir de los sentidos antes de que se le dé significado y se incorpore a procesos cognitivos de más alto nivel. Pues bien, esta memoria es muy limitada, hasta el punto de conocerse como la "el mágico número 7 +/- 2":
+
+<http://en.wikipedia.org/wiki/The_Magical_Number_Seven,_Plus_or_Minus_Two>
+
+<http://www.musanim.com/miller1956/>
+
+<http://www.musanim.com/miller1956/fig6.gif>
+
+La memoria visual humana es baja <http://en.wikipedia.org/wiki/Visual_memory#Short_term_visual_memory>, y es crucial dotar a los estímulos visuales de significado. El color, por su naturaleza cambiante y arbitraria, *no es la mejor clave visual*.
+
+
+  
+EJEMPLO APLICADO
+==============================
+
+Veamos un gráfico de barras acumuladas por categorías para 4 meses (4 barras).
+Primero preparamos un poquito los datos.
+
+
+
+```{r}
+# Cargamos los datos
+t <- get(load("tabla.rda"))
+         
+#vemos qué contiene
+t
+
+```
+
+
+```{r, fig.height=7, fig.width=10}
+   
+# Por defecto barplot usa escala de grises
+
+barplot(t)
+
+barplot(t, col=palette(),   legend = rownames(t))
+
+# generemos un png para evitar problemas de ventanas RStudio
+
+#png(filename = "barplot_1.png",
+#    width = 1024,
+#    height = 768)
+
+barplot(t, col=palette(),   
+        legend = rownames(t),
+        horiz = T)
+
+#dev.off()
+
+```
+
+Un poco horrible no? Es lo que sucede siguiendo las recomendaciones al pie de la letra. O quizás por no haber hecho la recomendación adecuadamente. Veamos otra formulación:
+
+- Cuando sólo puedas utilizar color para categorizar, y quieres facilitar al máximo la asociación color a categoría, estarás *muy limitado*, en general *no más de 5 categorías*. 
+
+Una vez dicho esto, no tienes por qué utilizar los colores perfectamente saturados (a no ser por ejemplo que estés en un contexto de muy bajo contraste). Puedes utilizar gamas de colores con suficiente separación y mucho más atractivos.
+
+Una herramienta maravillosa para prototipar estas "paletas de color" o escalas es el sitio web <http://colorbrewer2.org/> (totalmente independiente de lenguaje de programación). 
+
+**Ahora mostraremos brevemente el manejo del sitio colorbrewer**
+
+También hay otro sitio similar aquí <https://color.adobe.com/es/> muy vistoso pero en mi opinión menos práctico que colorbrewer.
+
+La librería más frecuentemente usada para generar este tipo de paletas en R es RColorBrewer. 
+
+Veamos primero todas las paletas que tenemos en RColorBrewer
+
+```{r, fig.height=7, fig.width=10}
+
+library(RColorBrewer)
+
+display.brewer.all()
+
+```
+
+Seleccionemos una paleta que cumpla unos requisitos:
+
+- que tenga cuantos más colores diferentes mejor
+
+- que parta de colores con bajo contraste para permitir el máximo contraste con los objetos más pequeños
+
+```{r}
+
+cols <- brewer.pal(12,"Paired")
+
+pizza(cols)
+
+```
+
+```{r, fig.height=7, fig.width=10}
+
+#png(filename = "barplot_2.png",
+#    width = 1024,
+#    height = 768,
+#    bg = "transparent")
+
+barplot(t, col = cols,   
+        legend = rownames(t),
+        horiz = T,
+        bg = "gray20")
+
+#dev.off()
+
+
+```
+
+
+La verdad es que todos estos intentos dan muy pocos frutos porque quizás el mecanismo de visualización no es el más adecuado.
+
+Veamos otras posibilidades, entre ellas el mosaico.
+La función básica es mosaic, pero no conseguimos lo que necesitamos (aunque permite manejar los NAs)
+
+
+```{r, fig.height=7, fig.width=10}
+
+
+mosaic(t,
+       main = "ejemplo mosaico",
+       color = cols, 
+       cex=0.7, 
+       las = 1,
+       bg = "gray20")
+
+
+```
+
+mosaicplot es mucho mejor pero debemos pasar los NA  a 0
+
+```{r, fig.height=7, fig.width=10}
+
+t2 <- as.matrix(t)
+  
+t2[is.na(t2)] <- 0
+
+t2 <- as.table(t(t2))
+
+#png(filename = "mosaic_def.png",
+#    width = 1024,
+#    height = 768,
+#    bg = "transparent")
+
+
+mosaicplot(t2,
+           main = "ejemplo mosaico",
+           color = cols, 
+           cex = 1, 
+           las = 1)
+
+#dev.off()
+
+```
+
+
+DIBUJAMOS UN MAPA DE COLOR Y VAMOS APLICANDO RECOMENDACIONES
+============================================================
+
+José Luis Cañadas tiene publicado un código R para la preparación de datos de la EPA aquí:
+<http://rpubs.com/joscani/mapa_paro_andalucia>. Nosotros aprovecharemos directamente el objeto generado. Veamos lo que contiene:
+
+```{r}
+
+load("tasas_paro_andalucia.rda")
+
+tasa.paro.and.provincial
+
+```
+
+Necesitamos también los datos para dibujar las provincias andaluzas.
+
+
+```{r}
+
+load("prov_map.rda")
+
+load("and.ggmap.rda")
+
+```
+
+Ahora ya podemos crear el mapa, utilizando ggplot y geom_map. Como facets utilizamos gedad y nforma3
+
+```{r, fig.height=7, fig.width=10}
+
+ggplot(tasa.paro.and.provincial) + 
+  geom_map(aes(map_id = cod_prov, fill = paro), 
+    map = and.ggmap, colour = "black") + 
+  expand_limits(x = and.ggmap$long, y = and.ggmap$lat) + 
+  facet_grid(gedad ~ nforma3) + 
+  scale_fill_gradient(low = "#FDECDD", high = "#D94701") + 
+  scale_x_continuous(breaks = NULL) + 
+  scale_y_continuous(breaks = NULL) + 
+  theme(axis.text.y = element_blank(), axis.text.x = element_blank(), 
+        plot.title = element_text(face = "bold", 
+        size = rel(1.4)), 
+        legend.text = element_text(size = rel(1.1)), 
+        strip.text = element_text(face = "bold", size = rel(1))) + 
+  labs(list(x = "", y = "", fill = "")) + 
+  ggtitle("Tasa de paro\npor edad y estudios")
+
+
+```
+
+Mapa con tasa de paro categorizada.
+
+```{r, fig.height=7, fig.width=10}
+
+ggplot(tasa.paro.and.provincial) + 
+  geom_map(aes(map_id = cod_prov, fill = intervalos), 
+    map = and.ggmap, colour = "black") + 
+  expand_limits(x = and.ggmap$long, y = and.ggmap$lat) + 
+  facet_grid(gedad ~ nforma3) + 
+  scale_fill_manual(values = c("#FDEBDD", 
+                               "#F9C9AD",
+                               "#E1885F", 
+                               "#D34400"), 
+                    labels = c("Menos del 20%", 
+                               "[20% - 40%)", 
+                               "[40% - 60%)", 
+                               "[60% - 80%]")) + 
+  scale_x_continuous(breaks = NULL) + 
+  scale_y_continuous(breaks = NULL) + 
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_blank(), 
+        plot.title = element_text(face = "bold", 
+        size = rel(1.4)), 
+        legend.text = element_text(size = rel(1.1)), 
+        strip.text = element_text(face = "bold", 
+        size = rel(1.1))) + 
+  labs(list(x = "", y = "", fill = "")) + 
+  ggtitle("Tasa de paro\npor edad y estudios")
+
+
+
+```
+
+Mapa con tasa de paro con alguna mejora
+
+- optimización de colores de líneas y fondo
+
+- incremento de categorías
+
+- uso de una escala divergente
+
+```{r, fig.height=7, fig.width=10}
+
+cols <- brewer.pal(8,"PiYG")
+
+
+
+ggplot(tasa.paro.and.provincial) + 
+  geom_map(aes(map_id = cod_prov, fill = intervalosfinos), 
+    map = and.ggmap, colour = "cadetblue1") + 
+  expand_limits(x = and.ggmap$long, y = and.ggmap$lat) + 
+  facet_grid(gedad ~ nforma3) + 
+  scale_fill_manual(values = rev(cols),  
+                    labels = c("<10", 
+                               "10-20", 
+                               "20-30", 
+                               "30-40",
+                               "40-50",
+                               "50-60",
+                               "60-70",
+                               "70-80")) + 
+  scale_x_continuous(breaks = NULL) + 
+  scale_y_continuous(breaks = NULL) + 
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_blank(), 
+        plot.title = element_text(face = "bold", 
+        size = rel(1.4)), 
+        legend.text = element_text(size = rel(1.1)), 
+        strip.text = element_text(face = "bold", 
+        size = rel(1.1))) + 
+  labs(list(x = "", y = "", fill = "")) + 
+  ggtitle("Tasa de paro\npor edad y estudios")
+
+
+
+```
+
+POR QUÉ ES IMPORTANTE CONSIDERAR LA CEGUERA AL COLOR
+=====================================================
+
+dichromat es una librería que incorpora funciones que cambian las distinciones de color azul-verde a aproximadamente los efectos de las dos formas más comunes de ceguera a color: protanopia y deuteranopia.
+
+Un ejemplo de heatmap.
+
+```{r}
+
+par(mfcol=c(1, 2))
+N <- 20
+pie(rep(1, N),
+    col = heat.colors(N))
+
+```
+
+Cómo lo vería una persona con deuteranopia:
+
+```{r}
+
+pie(rep(1, N),
+    col = dichromat(heat.colors(N), type = "deutan"))
+
+
+```
+
+Y con protanopia
+
+```{r}
+
+pie(rep(1, N),
+    col = dichromat(heat.colors(N), type = "tritan"))
+
+
+```
+
+
+Veamos la simulación de nuestro último mapa para una persona con deuteranopia (y aprovechamos para variar el color de las líneas de separación):
+
+
+```{r, fig.height=7, fig.width=10}
+
+cols <- brewer.pal(8,"PiYG")
+
+
+
+ggplot(tasa.paro.and.provincial) + 
+  geom_map(aes(map_id = cod_prov, fill = intervalosfinos), 
+    map = and.ggmap, colour = "yellow") + 
+  expand_limits(x = and.ggmap$long, y = and.ggmap$lat) + 
+  facet_grid(gedad ~ nforma3) + 
+  scale_fill_manual(values = dichromat(rev(cols), type = "deutan"),  
+                    labels = c("<10", 
+                               "10-20", 
+                               "20-30", 
+                               "30-40",
+                               "40-50",
+                               "50-60",
+                               "60-70",
+                               "70-80")) + 
+  scale_x_continuous(breaks = NULL) + 
+  scale_y_continuous(breaks = NULL) + 
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_blank(), 
+        plot.title = element_text(face = "bold", 
+        size = rel(1.4)), 
+        legend.text = element_text(size = rel(1.1)), 
+        strip.text = element_text(face = "bold", 
+        size = rel(1.1))) + 
+  labs(list(x = "", y = "", fill = "")) + 
+  ggtitle("Tasa de paro\npor edad y estudios")
+
+
+
+```
+
+
+
+
+A propósito de daltonismo y heatmaps, mirad comentarios en el foro de a propósito de los mapas del cáncer en España:
+
+<http://elpais.com/elpais/2014/09/30/ciencia/1412091987_955227.html>
+
+Guillermo López <http://eskup.elpais.com/glopllu>
+
+heber <http://eskup.elpais.com/C1412009164-b3defc80060c0a3a32fa0a1b8803d2eb/1412173041-45d715fa118fefc62185df50eeef8120>
+
+Gracias por la explicación. Normalmente en ciencia se utiliza un código de colores común a lo que se conoce como la codificación semafórica donde verde significa poco, amarillo moderado y rojo peligroso. Por eso utilizan este tipo de codificación. Cierto es que a los daltónicos esa codificación no se les puede aplicar. Pero a los no daltónicos, los colores verde y rojo son los que mejor se distinguen entre sí por las características de las células de la retina.
+
+Julio Fernández <http://eskup.elpais.com/juli0>
+
+heber <http://eskup.elpais.com/C1412009164-b3defc80060c0a3a32fa0a1b8803d2eb/1412174451-120c5b04818bff4f681b6de84a271ff5>
+
+Muchas gracias, esa sería una solución, pues la mayoría de daltónicos (en mi caso ausencia aguda de percepción de la frecuencia del verde) desarrollamos un sentido para diferenciar tonos en relación a su luminosidad, hasta el punto de que "coloreamos" lo que en realidad es gris (¿cuánto tiempo ha de pasar hasta que me de cuenta de que la película en la TV no es en color sino en B/N?). El cambiar los gráficos hacia colores visibles o B/N (jamás soy capaz de leer un gráfico con cólores) sería un detalle, por no hablar del tema de los semáforos (distintos tonos en distintas ciudades...) Foro EL PAÍS
+
+
+
+APENDICE - COLOR EN PYTHON
+=====================
+
+- Escalas o paletas de color en python
+<http://web.stanford.edu/~mwaskom/software/seaborn/tutorial/color_palettes.html>
+
+- Más color y python, muy buena discusión del tema
+<https://jakevdp.github.io/blog/2014/10/16/how-bad-is-your-colormap/>
+
+APENDICE
+========
+
+¿Necesitas software más especializado? Consulta
+
+<http://visionscience.com/documents/strasburger/strasburger.html>
+
+Quien por cierto menciona R así:
+
+"Modeling Psychophysical Data in R:
+
+However, given the emphasis on freely available software, the – freely available – general purpose statistical package R must be mentioned here. Ken Knoblauch from Lyon, France has written three libraries for R that are aimed at psychophysics, psyphy, MLDS, and MLCM, explained above and below. In particular there is now a comprehensive book on modeling psychophysical data by Knoblauch and Maloney. (Here is a preview and Chapter 1) "
+
+
