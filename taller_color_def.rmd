@@ -179,7 +179,7 @@ Muy importante:
 
 - En la práctica: distinguir luz emitida (p.ej. monitor LCD-TFT) vs. luz reflejada (p.ej., proyector)
 
-- Color y contraste.
+- Color y contraste y constancia. Veremos más detalle más adelante.
 
 La función colortools::adjacent permite generar esquemas de color que están próximos unos a otros. 
 
@@ -231,13 +231,13 @@ Muy importante: sensibilidad relativa del Sistema Visual Humano en f. longitudes
 
 <http://en.wikipedia.org/wiki/Color_vision#mediaviewer/File:Eyesensitivity.svg>
 
-El color es una propiedad física de la luz emitida o reflejada por los objetos. Pero es esencial saber que el color que nosotros percibimos es una construcción de nuestro sistema cognitivo.
+El color es un constructo humano, la luz tiene unas propiedades físicas y los objetos en los que se refleja otras y eso permite una estimulación en los receptores humanos, la interpretación de lo que llega a los receptores, su transporte y procesamiento en las zonas visuales del cerebro es lo que realmente percibimos como color, es en suma una interpretación de lo que nos llega.
 
 En Psicofísica se utilizan las ilusiones como herramienta de trabajo. Veamos una excelente representación de estas ilusiones de color:
 
 <http://www.purveslab.net/seeforyourself/>
 
-En suma: en la percepción de color tanto retina como córtex están involucrados, y gobernados por principios generales como la "constancia del color":
+En la percepción de color tanto retina como córtex están involucrados, y gobernados por principios generales como la "constancia del color":
 
 <http://en.wikipedia.org/wiki/Color_constancy>
 
@@ -640,6 +640,20 @@ Julio Fernández <http://eskup.elpais.com/juli0>
 heber <http://eskup.elpais.com/C1412009164-b3defc80060c0a3a32fa0a1b8803d2eb/1412174451-120c5b04818bff4f681b6de84a271ff5>
 
 Muchas gracias, esa sería una solución, pues la mayoría de daltónicos (en mi caso ausencia aguda de percepción de la frecuencia del verde) desarrollamos un sentido para diferenciar tonos en relación a su luminosidad, hasta el punto de que "coloreamos" lo que en realidad es gris (¿cuánto tiempo ha de pasar hasta que me de cuenta de que la película en la TV no es en color sino en B/N?). El cambiar los gráficos hacia colores visibles o B/N (jamás soy capaz de leer un gráfico con cólores) sería un detalle, por no hablar del tema de los semáforos (distintos tonos en distintas ciudades...) Foro EL PAÍS
+
+QUE *NO* HEMOS CUBIERTO EN ESTE TALLER
+======================================
+
+- Espacio HCL (Hue, Chroma, Luminance):
+
+"Unfortunately, the dimensions in HSV space map poorly to perceptual properties and the use of HSV colors encourages the use of highly saturated colors. A perceptually-based color model that mitigates these problems involves Hue-Chroma-Luminance (HCL) triplets (see Ihaka, 2003), resulting from a transformation of CIELUV color space (see Wikipedia
+2007a)"
+
+Escaping RGBLand <http://statmath.wu.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf>
+
+<http://blog.ggplot2.org/post/24607351280/choosing-colour-palettes-part-ii-educated-choices>
+
+<http://cran.r-project.org/web/packages/colorspace/vignettes/hcl-colors.pdf> (Paquete colorspace)
 
 
 
