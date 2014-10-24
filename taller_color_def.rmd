@@ -8,6 +8,8 @@ output: word_document
 GRACIAS!!
 ========================================================
 
+- A los asistentes a este talleR
+
 - A los organizadores de estas nuestras (maravillosas) Jornadas de Usuarios R
 
 - A los miembros del comité científico que (inexplicablemente) aprobaron el taller
@@ -172,7 +174,11 @@ colortools::wheel("yellow", num = 24)
 En la percepción del color, el entorno físico y dispositivo que genera el color son clave.
 
 Muy importante:
-- Luz emitida (p.ej. monitor LCD-TFT) vs. luz reflejada (p.ej., proyector)
+
+- La visión de color en humanos se realiza por la activación de los fotorreceptores de la retina conocidos como conos (<http://en.wikipedia.org/wiki/Color_vision#Cone_cells_in_the_human_eye>), que se activan con la luz intensa como la luz del día. Rápidamente: para poder distinguir el color la luz debe ser parecida a la del día: intensa. Si no lo es veremos en monocromo (con los bastones, los otros fotorreceptores).
+
+- En la práctica: distinguir luz emitida (p.ej. monitor LCD-TFT) vs. luz reflejada (p.ej., proyector)
+
 - Color y contraste.
 
 La función colortools::adjacent permite generar esquemas de color que están próximos unos a otros. 
@@ -214,18 +220,27 @@ rgb2hsv(col2rgb("khaki"))
 Antes de nada, ¿el color existe en la naturaleza? ¿Necesitamos el color para poder manejarnos en el mundo?
 
 Para manejarnos en el mundo lo que necesitamos es contraste. El color *no* es necesario.
+
 <http://en.wikipedia.org/wiki/Contrast_%28vision%29>
 
-Funciones de sensibilidad al contraste en color:
-<http://www.handprint.com/HP/WCL/IMG/conesens4.gif>
+Respuesta normalizada de fotorreceptores a longitudes de onda -"los 3 colores básicos RGB" (con una precisión importante, cada curva cubre y *se solapa* a un rango de frecuencias, no a un único color):
+
+<http://en.wikipedia.org/wiki/Color_vision#mediaviewer/File:Cone-fundamentals-with-srgb-spectrum.svg>
+
+Muy importante: sensibilidad relativa del Sistema Visual Humano en f. longitudes de onda: 
+
+<http://en.wikipedia.org/wiki/Color_vision#mediaviewer/File:Eyesensitivity.svg>
 
 El color es una propiedad física de la luz emitida o reflejada por los objetos. Pero es esencial saber que el color que nosotros percibimos es una construcción de nuestro sistema cognitivo.
 
 En Psicofísica se utilizan las ilusiones como herramienta de trabajo. Veamos una excelente representación de estas ilusiones de color:
+
 <http://www.purveslab.net/seeforyourself/>
 
+En suma: en la percepción de color tanto retina como córtex están involucrados, y gobernados por principios generales como la "constancia del color":
 
-*Incluir un código para ilustrar el CONTRASTE DE COLOR*
+<http://en.wikipedia.org/wiki/Color_constancy>
+
 
 Recomendaciones:
 
@@ -235,7 +250,7 @@ Recomendaciones:
 
 - Humanos somos relativamente malos para distinciones finas de color (matiz)
 
-- No todos los colores se ven igual: recomendaciones sobre el azul en concreto
+- No todos los colores se ven igual: recomendaciones sobre azul y rojo en concreto
 
 - Evitar que canales entre en conflicto. Efecto "cromoestereopsis"
 
@@ -650,4 +665,13 @@ Quien por cierto menciona R así:
 
 However, given the emphasis on freely available software, the – freely available – general purpose statistical package R must be mentioned here. Ken Knoblauch from Lyon, France has written three libraries for R that are aimed at psychophysics, psyphy, MLDS, and MLCM, explained above and below. In particular there is now a comprehensive book on modeling psychophysical data by Knoblauch and Maloney. (Here is a preview and Chapter 1) "
 
+APENDICE HOJAS DE ESTILO PERSONALIZADAS PARA GGPLOT
+===================================================
 
+Es posible preparar hojas de estilo sobre todo para ggplot. En concreto estas se han hecho bastante populares, reproducen los estilos del sitio de Nate Silver 
+
+Hoja de estilo: <https://github.com/alex23lemm/theme_fivethirtyeight>
+
+Explicación de la misma: <http://austinclemens.com/blog/2014/07/03/fivethirtyeight-com-style-graphs-in-ggplot2/>
+
+El sitio de Nate Silver <http://fivethirtyeight.com/>
