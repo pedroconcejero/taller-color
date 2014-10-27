@@ -16,7 +16,7 @@ GRACIAS!!
 
 - A José Antonio Collado, el experto sobre color autor de las recomendaciones y ejercicios y de la base teórica de este taller, pero que no ha podido asistir a las jornadas
 
-- A José Antonio Cañadas (<https://twitter.com/joscani>) por sus mapas (<http://rpubs.com/joscani/mapa_paro_andalucia>)
+- A José Luis Cañadas (<https://twitter.com/joscani>) por sus mapas (<http://rpubs.com/joscani/mapa_paro_andalucia>)
 
 - A Miguel Fiandor (<https://twitter.com/mfiandor>) por sus ejemplos enviados a la lista R-hispano, en concreto esta que comentaremos (criticaremos): <http://www.elconfidencial.com/espana/2014-08-07/nueve-de-cada-diez-municipios-tienen-mas-paro-ahora-que-antes-de-comenzar-la-crisis_172665/>
 

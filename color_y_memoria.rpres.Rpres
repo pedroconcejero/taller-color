@@ -56,7 +56,7 @@ colortools::wheel("indianred3", num = 4, cex = 0.01, verbose = F)
 
 ```{r, echo=FALSE}
 
-tuscolores <- c("red", "green", "cadetblue1", "blue")
+tuscolores <- c("forestgreen", "deepskyblue", "dodgerblue", "deeppink3")
 
 pizza(tuscolores)
 
