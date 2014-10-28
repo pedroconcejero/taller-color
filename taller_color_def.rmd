@@ -431,6 +431,11 @@ José Luis Cañadas tiene publicado un código R para la preparación de datos d
 
 load("tasas_paro_andalucia.rda")
 
+# Objeto generado da problemas en sistemas no-windows
+
+Encoding(levels(tasa.paro.and.provincial$prov)) <- "latin1"
+Encoding(levels(tasa.paro.and.provincial$gedad)) <- "latin1"
+
 tasa.paro.and.provincial
 
 ```
