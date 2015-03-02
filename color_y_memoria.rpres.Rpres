@@ -56,9 +56,9 @@ colortools::wheel("indianred3", num = 4, cex = 0.01, verbose = F)
 
 ```{r, echo=FALSE}
 
-tuscolores <- c("forestgreen", "deepskyblue", "dodgerblue", "deeppink3")
+tuscolores <- c("indianred3", "palegreen3", "mediumturquoise", "purple")
 
-pizza(tuscolores)
+pizza(tuscolores, border = "white")
 
 ```
 
@@ -72,25 +72,6 @@ colortools::wheel("khaki", num = 5, cex = 0.01, verbose = F)
 
 ```
 
-Verificiación Ejercicio 2
-===========
-
-```{r, echo=FALSE}
-
-colortools::wheel("khaki", num = 5, cex = 0.01, verbose = F)
-
-```
-
-***
-  
-
-```{r, echo=FALSE}
-
-tuscolores <- c("grey90", "grey20")
-
-pizza(tuscolores)
-
-```
 
 
 Ejercicio 3
@@ -103,25 +84,6 @@ colortools::wheel("darkslateblue", num = 6, cex = 0.01, verbose = F)
 
 ```
 
-Verificiación Ejercicio 3
-===========
-
-```{r, echo=FALSE}
-
-colortools::wheel("darkslateblue", num = 6, cex = 0.01, verbose = F)
-
-```
-
-***
-  
-
-```{r, echo=FALSE}
-
-tuscolores <- c("grey90", "grey20")
-
-pizza(tuscolores)
-
-```
 
 
 Ejercicio 4
@@ -134,25 +96,6 @@ colortools::wheel("darkseagreen", num = 7, cex = 0.01, verbose = F)
 
 ```
 
-Verificiación Ejercicio 4
-===========
-
-```{r, echo=FALSE}
-
-colortools::wheel("darkseagreen", num = 7, cex = 0.01, verbose = F)
-
-```
-
-***
-  
-
-```{r, echo=FALSE}
-
-tuscolores <- c("grey90", "grey20")
-
-pizza(tuscolores)
-
-```
 
 
 COLOR Y MEMORIA Y SEMÁNTICA
@@ -192,8 +135,6 @@ Recomendaciones
 - Si no tenemos más remedio:
 
   - Estaremos limitados por los 7 colores básicos con nombre unívoco.
-  
-  - En la medida de lo posible usaremos colores básicos (máxima saturación para un matiz -o max(S) para un H correspondiente a un color básico).
   
   - Incorporaremos *siempre* una leyenda asociando colores a significado.
 
