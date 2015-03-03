@@ -10,7 +10,7 @@ GRACIAS!!
 
 - A los asistentes a este talleR
 
-- A los organizadores de estas nuestras (maravillosas) Jornadas de Usuarios R
+- A los organizadores de estas nuestras (maravillosas) Jornadas de Usuarios R (primer lugar donde se impartió este taller)
 
 - A los miembros del comité científico que (inexplicablemente) aprobaron el taller
 
@@ -25,7 +25,11 @@ GRACIAS!!
 OBJETIVOS DE ESTE DOCUMENTO
 ========================================================
 
-Este documento es la documentación para el talleR de coloR dentro de las jornadas R-hispano 2014:
+Este documento es la documentación para el talleR de coloR en el gRupo madRid R:
+
+<http://madrid.r-es.org/>
+
+y que es una evolución del impartido dentro de las jornadas R-hispano 2014:
 
 <http://r-es.org/item1151?structure=Comunidad&from=VI+Jornadas>
 
@@ -59,9 +63,14 @@ DOCUMENTACIÓN DISPONIBLE EN INTERNET Y QUE USAREMOS EN EL TALLER
 - Using Color in R (ver "Los números del color")
   <http://research.stowers-institute.org/efg/Report/UsingColorInR.pdf>
   
+- Maravillosa "cheatsheet" que es mucho más moderna y eficaz: 
+  <https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf>
+  
 - Color Brewer web site
   <http://colorbrewer2.org/>
-  
+
+DOCUMENTACIÓN ADICIONAL PERO QUE NO USAREMOS EN EL TALLER
+
 - Color Scales, some further info
   <http://geog.uoregon.edu/datagraphics/color_scales.htm>
   
@@ -134,7 +143,7 @@ library(vcd)
 library(maptools)
 library(sp)
 library(classInt)
-library(ggmap)  # tb carga ggplot2
+library(ggmap)  # también carga ggplot2
 
 ```
 
@@ -248,7 +257,7 @@ pizza(hcl(h = c(0, 120, 240), c = rep(400, 3)))
 
 Escaping RGBLand <http://statmath.wu.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf>
 
-<http://blog.ggplot2.org/post/24607351280/choosing-colour-palettes-part-ii-educated-choices>
+<http://www.r-bloggers.com/choosing-colour-palettes-part-ii-educated-choices/>
 
 "Unfortunately, the dimensions in HSV space map poorly to perceptual properties and the use of HSV colors encourages the use of highly saturated colors. A perceptually-based color model that mitigates these problems involves Hue-Chroma-Luminance (HCL) triplets (see Ihaka, 2003), resulting from a transformation of CIELUV color space (see Wikipedia
 2007a)"
@@ -352,8 +361,6 @@ Recomendaciones:
 - Evitar que canales entre en conflicto. Efecto "cromoestereopsis"
 
 - <http://en.wikipedia.org/wiki/User:Karam91/Chromostereopsis>
-
-- <http://desdag.blogspot.com.es/2012/05/chromostereopsis-design-fails-due-to.html>
 
 - aunque ocasional y muy cuidadosamente se puede usar con beneficio
 
@@ -775,22 +782,29 @@ APENDICE COLORS IN THE COMPLEX DOMAIN
 Como propone Antonio Sánchez Chinchón en su blog
 <https://aschinchon.wordpress.com/2014/10/01/complex-domain-coloring/>
 
-```{r}
+```{r, fig.height=7, fig.width=10}
+
 require(ggplot2)
+
 f = function(x) (1+1i)*log(sin((x^3-1)/x))
+
 z=as.vector(outer(seq(-5, 5, by =.01),1i*seq(-5, 5, by =.01),'+'))
+
 z=data.frame(x=Re(z),
              y=Im(z),
              h=(Arg(f(z))<0)*1+Arg(f(z))/(2*pi),
              s=(1+sin(2*pi*log(1+Mod(f(z)))))/2,
              v=(1+cos(2*pi*log(1+Mod(f(z)))))/2)
+
 z=z[is.finite(apply(z,1,sum)),]
+
 opt=theme(legend.position="none",
           panel.background = element_blank(),
           panel.grid = element_blank(),
           axis.ticks=element_blank(),
           axis.title=element_blank(),
           axis.text =element_blank())
+
 ggplot(data=z, aes(x=x, y=y)) + geom_tile(fill=hsv(z$h,z$s,z$v))+ opt
 
 ```
