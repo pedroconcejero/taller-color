@@ -91,7 +91,8 @@ PREPARACIÓN DE ENTORNO R
 
 # Ojo pongo mi directorio de trabajo, tú pon el tuyo
 
-setwd("C:/Users/pedroc/Desktop/repos-git-2014/taller-color")
+setwd("C:/Users/pedroc/Desktop/2014/repos-git-2014/taller-color")
+
 
 
 ```
@@ -99,6 +100,8 @@ setwd("C:/Users/pedroc/Desktop/repos-git-2014/taller-color")
 Si es necesario, instalemos librerías requeridas.
 
 ```{r}
+
+options(repos = c(CRAN = "http://cran.rstudio.com"))
 
 # Inicialización
 # Comprueba si están y si no instala librerías
@@ -112,6 +115,8 @@ if ("maptools" %in% row.names(installed.packages())  == FALSE) install.packages(
 if ("sp" %in% row.names(installed.packages())  == FALSE) install.packages("sp", dependencies = T)
 if ("classInt" %in% row.names(installed.packages())  == FALSE) install.packages("classInt", dependencies = T)
 if ("ggmap" %in% row.names(installed.packages())  == FALSE) install.packages("ggmap", dependencies = T)
+if ("grDevices" %in% row.names(installed.packages())  == FALSE) install.packages("grDevices", dependencies = T)
+if ("colorspace" %in% row.names(installed.packages())  == FALSE) install.packages("colorspace", dependencies = T)
 
 
 # Cargamos librerías que vamos a usar
@@ -119,6 +124,8 @@ library(colortools)
 library(sos)
 library(dichromat)
 library(RColorBrewer)
+library(grDevices)
+library(colorspace)
 
 # Para dibujar mosaicos
 library(vcd)
@@ -197,9 +204,22 @@ colortools::adjacent("khaki")
 2. LOS NÚMEROS DEL COLOR
 ==========================
 
-Ver excelente presentación aquí:   <http://research.stowers-institute.org/efg/Report/UsingColorInR.pdf>
+Ver excelente presentación aquí: <http://research.stowers-institute.org/efg/Report/UsingColorInR.pdf>
 
-Nosotros utilizaremos el modelo de color HSV. En este modelo el color se puede representar "casi" como una circunferencia:
+Pero hay una maravillosa "cheatsheet" que es mucho más moderna y eficaz: 
+<https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf>
+
+Excelente consejo!
+Cuando se trata de seleccionar una paleta de color, NO INTENTES escoger los colores A MANO, por tu cuenta. Perderás un montón de tiempo y el resultado no será probablemente tan bueno. Usa uno de los paquetes especializados de R!
+
+Podemos utilizar 3 modelos de codificación de color en R: 
+RGB - Red Green Blue, modelo en el que se basa la representación de color por dispositivos pantallas etc.
+HSV - Hue Saturation Value -años 70- modelo más relacionado con cómo percibimos color las personas, pero con sus problemas 
+HCL - Hue Chroma Luminance - modelo más reciente basado en CIELUV
+
+¡¡Mirad las diferencias de escalas entre ellos!!
+
+En HSV/HCL el color se puede representar "casi" como una circunferencia:
 <http://www.handprint.com/HP/WCL/IMG/conesps3.gif>
 
 Siempre podemos pasar de color RGB a color HSV
@@ -207,8 +227,85 @@ Siempre podemos pasar de color RGB a color HSV
 ```{r}
 
 rgb2hsv(col2rgb("blue"))
-
 rgb2hsv(col2rgb("khaki"))
+
+```
+
+HSV usa valores 0-1 como RGB por defecto a no ser que especifiquemos maxColorValue = 255.
+HCL usa valores para H (color) de 0-360, con 0= rojo, 120 = verde, 240 = azul. Ojo, es más complicado de manejar que HSV (sin herramientas)
+
+```{r}
+
+# A Color Triad (Maximal Color Differences) in HSV and HCL
+
+pizza(c(hsv(1, 1, 1), hsv(1/3, 1, 1), hsv(2/3, 1, 1)))
+pizza(hcl(h = c(0, 120, 240), c = rep(400, 3)))
+
+
+```
+
+- Espacio HCL (Hue, Chroma, Luminance):
+
+Escaping RGBLand <http://statmath.wu.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf>
+
+<http://blog.ggplot2.org/post/24607351280/choosing-colour-palettes-part-ii-educated-choices>
+
+"Unfortunately, the dimensions in HSV space map poorly to perceptual properties and the use of HSV colors encourages the use of highly saturated colors. A perceptually-based color model that mitigates these problems involves Hue-Chroma-Luminance (HCL) triplets (see Ihaka, 2003), resulting from a transformation of CIELUV color space (see Wikipedia
+2007a)"
+
+<http://cran.r-project.org/web/packages/colorspace/vignettes/hcl-colors.pdf> (Paquete colorspace)
+
+
+```{r}
+
+pal <- function(col, border = "light gray", ...)
+ {
+ n <- length(col)
+ plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1),
+ axes = FALSE, xlab = "", ylab = "", ...)
+ rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)
+ }
+
+```
+
+colortools::PALETAS CUALITATIVAS
+
+```{r}
+
+pal(rainbow_hcl(4, start = 30, end = 300), main = "dynamic")
+pal(rainbow_hcl(4, start = 60, end = 240), main = "harmonic")
+pal(rainbow_hcl(4, start = 270, end = 150), main = "cold")
+pal(rainbow_hcl(4, start = 90, end = -30), main = "warm")
+
+```
+
+colortools::PALETAS SECUENCIALES
+
+```{r}
+
+pal(sequential_hcl(12, c = 0, power = 2.2))
+pal(sequential_hcl(12, power = 2.2))
+pal(heat_hcl(12, c = c(80, 30), l = c(30, 90), power = c(1/5, 2)))
+pal(terrain_hcl(12, c = c(65, 0), l = c(45, 90), power = c(1/2, 1.5)))
+pal(rev(heat_hcl(12, h = c(0, -100), c = c(40, 80), l = c(75, 40), power = 1)))
+```
+
+colortools::PALETAS DIVERGENTES
+
+```{r}
+
+pal(diverge_hcl(7))
+pal(diverge_hcl(7, c = 100, l = c(50, 90), power = 1))
+pal(diverge_hcl(7, h = c(130, 43), c = 100, l = c(70, 90)))
+pal(diverge_hcl(7, h = c(180, 330), c = 59, l = c(75, 95)))
+
+```
+
+colortools::choose_palette() UNA INTERFAZ GRÁFICA PARA ELEGIR PALETA
+
+```{r}
+#kk <- choose_palette()
+#filled.contour(volcano, color.palette = kk, asp = 1)
 
 ```
 
@@ -291,7 +388,7 @@ Primero preparamos un poquito los datos.
 # Cargamos los datos
 t <- get(load("tabla.rda"))
          
-#vemos qué contiene
+# podemos ver qué contiene
 t
 
 ```
@@ -299,14 +396,6 @@ t
 
 ```{r, fig.height=7, fig.width=10}
    
-# Por defecto barplot usa escala de grises
-
-barplot(t)
-
-barplot(t, col=palette(),   legend = rownames(t))
-
-# generemos un png para evitar problemas de ventanas RStudio
-
 #png(filename = "barplot_1.png",
 #    width = 1024,
 #    height = 768)
@@ -315,11 +404,58 @@ barplot(t, col=palette(),
         legend = rownames(t),
         horiz = T)
 
+# palette contiene 32 colores muy saturados variando sobre los colores básicos 
+
 #dev.off()
 
 ```
 
 Un poco horrible no? Es lo que sucede siguiendo las recomendaciones al pie de la letra. O quizás por no haber hecho la recomendación adecuadamente. Veamos otra formulación:
+
+```{r, fig.height=7, fig.width=10}
+   
+
+
+#png(filename = "barplot_2.png",
+#    width = 1024,
+#    height = 768)
+
+barplot(t, col=palette(rainbow(32)),   
+        legend = rownames(t),
+        horiz = T)
+
+#dev.off()
+
+```
+
+
+```{r, fig.height=7, fig.width=10}
+
+# palette contiene 32 colores muy saturados variando sobre los colores básicos 
+
+pizza(palette())
+
+# es lo mismo que si le pides rainbow
+
+pizza(rainbow(6))
+
+# pero puedes variar los valores de saturación para evitar que "canten" tanto
+
+pizza(rainbow(6, s = 0.5))
+
+#png(filename = "barplot_2.png",
+#    width = 1024,
+#    height = 768)
+
+barplot(t, col=rainbow(12, s = 0.6),   
+        legend = rownames(t),
+        horiz = T)
+
+#dev.off()
+
+
+```
+
 
 - Cuando sólo puedas utilizar color para categorizar, y quieres facilitar al máximo la asociación color a categoría, estarás *muy limitado*, en general *no más de 5 categorías*. 
 
@@ -359,42 +495,25 @@ pizza(cols)
 
 ```{r, fig.height=7, fig.width=10}
 
-#png(filename = "barplot_2.png",
+#png(filename = "barplot_3.png",
 #    width = 1024,
 #    height = 768,
-#    bg = "transparent")
+#    bg = "gray60")
 
 barplot(t, col = cols,   
         legend = rownames(t),
-        horiz = T,
-        bg = "gray20")
+        horiz = T)
 
 #dev.off()
 
 
 ```
 
-
-La verdad es que todos estos intentos dan muy pocos frutos porque quizás el mecanismo de visualización no es el más adecuado.
+Aunque la apariencia sea mucho más agradable, no quiere decir que el gráfico se entienda o se perciba mejor, porque quizás el mecanismo de visualización no es el más adecuado.
 
 Veamos otras posibilidades, entre ellas el mosaico.
-La función básica es mosaic, pero no conseguimos lo que necesitamos (aunque permite manejar los NAs)
 
-
-```{r, fig.height=7, fig.width=10}
-
-
-mosaic(t,
-       main = "ejemplo mosaico",
-       color = cols, 
-       cex=0.7, 
-       las = 1,
-       bg = "gray20")
-
-
-```
-
-mosaicplot es mucho mejor pero debemos pasar los NA  a 0
+mosaicplot es mucho mejor que mosaic pero debemos pasar los NA  a 0
 
 ```{r, fig.height=7, fig.width=10}
 
@@ -404,10 +523,10 @@ t2[is.na(t2)] <- 0
 
 t2 <- as.table(t(t2))
 
-#png(filename = "mosaic_def.png",
+#png(filename = "mosaic.png",
 #    width = 1024,
 #    height = 768,
-#    bg = "transparent")
+#    bg = "gray60")
 
 
 mosaicplot(t2,
@@ -436,7 +555,7 @@ load("tasas_paro_andalucia.rda")
 Encoding(levels(tasa.paro.and.provincial$prov)) <- "latin1"
 Encoding(levels(tasa.paro.and.provincial$gedad)) <- "latin1"
 
-tasa.paro.and.provincial
+#tasa.paro.and.provincial
 
 ```
 
@@ -645,20 +764,6 @@ Julio Fernández <http://eskup.elpais.com/juli0>
 heber <http://eskup.elpais.com/C1412009164-b3defc80060c0a3a32fa0a1b8803d2eb/1412174451-120c5b04818bff4f681b6de84a271ff5>
 
 Muchas gracias, esa sería una solución, pues la mayoría de daltónicos (en mi caso ausencia aguda de percepción de la frecuencia del verde) desarrollamos un sentido para diferenciar tonos en relación a su luminosidad, hasta el punto de que "coloreamos" lo que en realidad es gris (¿cuánto tiempo ha de pasar hasta que me de cuenta de que la película en la TV no es en color sino en B/N?). El cambiar los gráficos hacia colores visibles o B/N (jamás soy capaz de leer un gráfico con cólores) sería un detalle, por no hablar del tema de los semáforos (distintos tonos en distintas ciudades...) Foro EL PAÍS
-
-QUE *NO* HEMOS CUBIERTO EN ESTE TALLER
-======================================
-
-- Espacio HCL (Hue, Chroma, Luminance):
-
-"Unfortunately, the dimensions in HSV space map poorly to perceptual properties and the use of HSV colors encourages the use of highly saturated colors. A perceptually-based color model that mitigates these problems involves Hue-Chroma-Luminance (HCL) triplets (see Ihaka, 2003), resulting from a transformation of CIELUV color space (see Wikipedia
-2007a)"
-
-Escaping RGBLand <http://statmath.wu.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf>
-
-<http://blog.ggplot2.org/post/24607351280/choosing-colour-palettes-part-ii-educated-choices>
-
-<http://cran.r-project.org/web/packages/colorspace/vignettes/hcl-colors.pdf> (Paquete colorspace)
 
 
 
