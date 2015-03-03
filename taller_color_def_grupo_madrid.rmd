@@ -1,7 +1,7 @@
 ---
-title: "talleR peRcepcion del coloR VI joRnadas R-hispano"
+title: "talleR peRcepcion del coloR gRupo R madRid"
 author: "pedro.concejerocerezo at telefonica.com"
-date: "Viernes 24 de octubre, 2014"
+date: "Martes 3 marzo 2015"
 output: word_document
 ---
 
@@ -394,11 +394,12 @@ t
 ```
 
 
-```{r, fig.height=7, fig.width=10}
+```{r, fig.height=7, fig.width=7}
    
 #png(filename = "barplot_1.png",
 #    width = 1024,
 #    height = 768)
+par(bg = "gray80")
 
 barplot(t, col=palette(),   
         legend = rownames(t),
@@ -410,26 +411,9 @@ barplot(t, col=palette(),
 
 ```
 
-Un poco horrible no? Es lo que sucede siguiendo las recomendaciones al pie de la letra. O quizás por no haber hecho la recomendación adecuadamente. Veamos otra formulación:
+Un poco horrible no? Es lo que sucede siguiendo las recomendaciones al pie de la letra. O quizás por no haber hecho la recomendación adecuadamente. Es un problema de elegir la saturación adecuada para nuestros colores. Veamos cómo.
 
-```{r, fig.height=7, fig.width=10}
-   
-
-
-#png(filename = "barplot_2.png",
-#    width = 1024,
-#    height = 768)
-
-barplot(t, col=palette(rainbow(32)),   
-        legend = rownames(t),
-        horiz = T)
-
-#dev.off()
-
-```
-
-
-```{r, fig.height=7, fig.width=10}
+```{r}
 
 # palette contiene 32 colores muy saturados variando sobre los colores básicos 
 
@@ -443,16 +427,16 @@ pizza(rainbow(6))
 
 pizza(rainbow(6, s = 0.5))
 
-#png(filename = "barplot_2.png",
-#    width = 1024,
-#    height = 768)
 
+```
+
+Y usando s = 0.5 tendremos
+
+```{r, fig.height=7, fig.width=7}
+par(bg = "gray80")
 barplot(t, col=rainbow(12, s = 0.6),   
         legend = rownames(t),
         horiz = T)
-
-#dev.off()
-
 
 ```
 
@@ -471,7 +455,7 @@ La librería más frecuentemente usada para generar este tipo de paletas en R es
 
 Veamos primero todas las paletas que tenemos en RColorBrewer
 
-```{r, fig.height=7, fig.width=10}
+```{r, fig.height=7, fig.width=7}
 
 library(RColorBrewer)
 
@@ -485,26 +469,17 @@ Seleccionemos una paleta que cumpla unos requisitos:
 
 - que parta de colores con bajo contraste para permitir el máximo contraste con los objetos más pequeños
 
-```{r}
+```{r, fig.height=7, fig.width=7}
 
 cols <- brewer.pal(12,"Paired")
 
 pizza(cols)
 
-```
-
-```{r, fig.height=7, fig.width=10}
-
-#png(filename = "barplot_3.png",
-#    width = 1024,
-#    height = 768,
-#    bg = "gray60")
-
+par(bg = "gray80")
 barplot(t, col = cols,   
         legend = rownames(t),
         horiz = T)
 
-#dev.off()
 
 
 ```
@@ -515,7 +490,7 @@ Veamos otras posibilidades, entre ellas el mosaico.
 
 mosaicplot es mucho mejor que mosaic pero debemos pasar los NA  a 0
 
-```{r, fig.height=7, fig.width=10}
+```{r, fig.height=7, fig.width=7}
 
 t2 <- as.matrix(t)
   
@@ -523,19 +498,13 @@ t2[is.na(t2)] <- 0
 
 t2 <- as.table(t(t2))
 
-#png(filename = "mosaic.png",
-#    width = 1024,
-#    height = 768,
-#    bg = "gray60")
-
-
+par(bg = "gray80")
 mosaicplot(t2,
            main = "ejemplo mosaico",
            color = cols, 
            cex = 1, 
            las = 1)
 
-#dev.off()
 
 ```
 
@@ -799,3 +768,30 @@ Hoja de estilo: <https://github.com/alex23lemm/theme_fivethirtyeight>
 Explicación de la misma: <http://austinclemens.com/blog/2014/07/03/fivethirtyeight-com-style-graphs-in-ggplot2/>
 
 El sitio de Nate Silver <http://fivethirtyeight.com/>
+
+APENDICE COLORS IN THE COMPLEX DOMAIN
+===================================================
+
+Como propone Antonio Sánchez Chinchón en su blog
+<https://aschinchon.wordpress.com/2014/10/01/complex-domain-coloring/>
+
+```{r}
+require(ggplot2)
+f = function(x) (1+1i)*log(sin((x^3-1)/x))
+z=as.vector(outer(seq(-5, 5, by =.01),1i*seq(-5, 5, by =.01),'+'))
+z=data.frame(x=Re(z),
+             y=Im(z),
+             h=(Arg(f(z))<0)*1+Arg(f(z))/(2*pi),
+             s=(1+sin(2*pi*log(1+Mod(f(z)))))/2,
+             v=(1+cos(2*pi*log(1+Mod(f(z)))))/2)
+z=z[is.finite(apply(z,1,sum)),]
+opt=theme(legend.position="none",
+          panel.background = element_blank(),
+          panel.grid = element_blank(),
+          axis.ticks=element_blank(),
+          axis.title=element_blank(),
+          axis.text =element_blank())
+ggplot(data=z, aes(x=x, y=y)) + geom_tile(fill=hsv(z$h,z$s,z$v))+ opt
+
+```
+
