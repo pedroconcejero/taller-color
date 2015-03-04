@@ -20,6 +20,7 @@ GRACIAS!!
 
 - A Miguel Fiandor (<https://twitter.com/mfiandor>) por sus ejemplos enviados a la lista R-hispano, en concreto esta que comentaremos (criticaremos): <http://www.elconfidencial.com/espana/2014-08-07/nueve-de-cada-diez-municipios-tienen-mas-paro-ahora-que-antes-de-comenzar-la-crisis_172665/>
 
+- A Óscar Perpiñán (@oscarperpinan) por su ayuda sobre EBImage para convertir imagen a escala de grises.
 
 
 OBJETIVOS DE ESTE DOCUMENTO
@@ -69,7 +70,7 @@ DOCUMENTACIÓN DISPONIBLE EN INTERNET Y QUE USAREMOS EN EL TALLER
 - Color Brewer web site
   <http://colorbrewer2.org/>
 
-DOCUMENTACIÓN ADICIONAL PERO QUE NO USAREMOS EN EL TALLER
+DOCUMENTACIÓN ADICIONAL QUE *NO* USAREMOS EN EL TALLER
 
 - Color Scales, some further info
   <http://geog.uoregon.edu/datagraphics/color_scales.htm>
@@ -161,7 +162,7 @@ sos::findFn("{color}")
 
 ```
 
-Hay 359 funciones en 158 paquetes CRAN para estudiar o manejar color en R.
+En el momento de escribir estas líneas, la función anterior ha encontrado 357 funciones en 159 paquetes CRAN para estudiar o manejar color en R.
 
 Tenemos por ejemplo la librería colorscience
 
@@ -219,7 +220,7 @@ Pero hay una maravillosa "cheatsheet" que es mucho más moderna y eficaz:
 <https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf>
 
 Excelente consejo!
-Cuando se trata de seleccionar una paleta de color, NO INTENTES escoger los colores A MANO, por tu cuenta. Perderás un montón de tiempo y el resultado no será probablemente tan bueno. Usa uno de los paquetes especializados de R!
+"Cuando se trata de seleccionar una paleta de color, NO INTENTES escoger los colores A MANO, por tu cuenta. Perderás un montón de tiempo y el resultado no será probablemente tan bueno. Usa uno de los paquetes especializados de R!"
 
 Podemos utilizar 3 modelos de codificación de color en R: 
 RGB - Red Green Blue, modelo en el que se basa la representación de color por dispositivos pantallas etc.
@@ -240,7 +241,7 @@ rgb2hsv(col2rgb("khaki"))
 
 ```
 
-HSV usa valores 0-1 como RGB por defecto a no ser que especifiquemos maxColorValue = 255.
+HSV usa valores 0-1, al igual que R hace con RGB por defecto a no ser que especifiquemos maxColorValue = 255 (!).
 HCL usa valores para H (color) de 0-360, con 0= rojo, 120 = verde, 240 = azul. Ojo, es más complicado de manejar que HSV (sin herramientas)
 
 ```{r}
@@ -262,10 +263,12 @@ Escaping RGBLand <http://statmath.wu.ac.at/~zeileis/papers/Zeileis+Hornik+Murrel
 "Unfortunately, the dimensions in HSV space map poorly to perceptual properties and the use of HSV colors encourages the use of highly saturated colors. A perceptually-based color model that mitigates these problems involves Hue-Chroma-Luminance (HCL) triplets (see Ihaka, 2003), resulting from a transformation of CIELUV color space (see Wikipedia
 2007a)"
 
-<http://cran.r-project.org/web/packages/colorspace/vignettes/hcl-colors.pdf> (Paquete colorspace)
+<http://cran.r-project.org/web/packages/colorspace/vignettes/hcl-colors.pdf> (Paquete colorspace, de Ross Ihaka)
 
 
 ```{r}
+
+# en la viñeta de colorspace se propone esta función para dibujar los colores en mosaicos
 
 pal <- function(col, border = "light gray", ...)
  {
@@ -277,7 +280,7 @@ pal <- function(col, border = "light gray", ...)
 
 ```
 
-colortools::PALETAS CUALITATIVAS
+colorspace::PALETAS CUALITATIVAS
 
 ```{r}
 
@@ -288,7 +291,7 @@ pal(rainbow_hcl(4, start = 90, end = -30), main = "warm")
 
 ```
 
-colortools::PALETAS SECUENCIALES
+colorspace::PALETAS SECUENCIALES
 
 ```{r}
 
@@ -299,7 +302,7 @@ pal(terrain_hcl(12, c = c(65, 0), l = c(45, 90), power = c(1/2, 1.5)))
 pal(rev(heat_hcl(12, h = c(0, -100), c = c(40, 80), l = c(75, 40), power = 1)))
 ```
 
-colortools::PALETAS DIVERGENTES
+colorspace::PALETAS DIVERGENTES
 
 ```{r}
 
@@ -310,7 +313,7 @@ pal(diverge_hcl(7, h = c(180, 330), c = 59, l = c(75, 95)))
 
 ```
 
-colortools::choose_palette() UNA INTERFAZ GRÁFICA PARA ELEGIR PALETA
+colorspace::choose_palette() UNA INTERFAZ GRÁFICA PARA ELEGIR PALETA
 
 ```{r}
 #kk <- choose_palette()
@@ -325,7 +328,7 @@ colortools::choose_palette() UNA INTERFAZ GRÁFICA PARA ELEGIR PALETA
 ¿Cómo percibimos ese atributo físico que es el color?
 Antes de nada, ¿el color existe en la naturaleza? ¿Necesitamos el color para poder manejarnos en el mundo?
 
-Para manejarnos en el mundo lo que necesitamos es contraste. El color *no* es necesario.
+Para manejarnos en el mundo lo que necesitamos es contraste. El color *no* es imprescindible.
 
 <http://en.wikipedia.org/wiki/Contrast_%28vision%29>
 
@@ -351,6 +354,8 @@ En la percepción de color tanto retina como córtex están involucrados, y gobe
 Recomendaciones:
 
 - Antes de fijar los colores en una visualización: maximizar el contraste -> elegir fondo!
+
+-> MUY A MENUDO UN FONDO CON UN GRIS MEDIO PERMITE MAXIMIZAR EL CONTRASTE Y POR TANTO LA VISUALIZACIÓN DE FORMAS Y TEXTOS.
 
 - Color *no puede ser la única clave* (veremos más adelante razones adicionales)
 
