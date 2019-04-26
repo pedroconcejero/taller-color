@@ -1,7 +1,7 @@
 ---
 title: "talleR peRcepcion del coloR gRupo R madRid"
-author: "pedro.concejerocerezo at telefonica.com"
-date: "Martes 3 marzo 2015"
+author: "pedro.concejerocerezo at gmail.com"
+date: "Martes 3 marzo 2015 - revisado 26 abril 2019"
 output: word_document
 ---
 
@@ -18,7 +18,7 @@ GRACIAS!!
 
 - A José Luis Cañadas (<https://twitter.com/joscani>) por sus mapas (<http://rpubs.com/joscani/mapa_paro_andalucia>)
 
-- A Miguel Fiandor (<https://twitter.com/mfiandor>) por sus ejemplos enviados a la lista R-hispano, en concreto esta que comentaremos (criticaremos): <http://www.elconfidencial.com/espana/2014-08-07/nueve-de-cada-diez-municipios-tienen-mas-paro-ahora-que-antes-de-comenzar-la-crisis_172665/>
+- A Miguel Fiandor (<https://twitter.com/mfiandor>) por sus ejemplos enviados a la lista R-hispano, en concreto esta que comentaremos (criticaremos; aunque lamentablemente ahora en 2019 no se ve bien): <http://www.elconfidencial.com/espana/2014-08-07/nueve-de-cada-diez-municipios-tienen-mas-paro-ahora-que-antes-de-comenzar-la-crisis_172665/>
 
 - A Óscar Perpiñán (@oscarperpinan) por su ayuda sobre EBImage para convertir imagen a escala de grises.
 
@@ -30,9 +30,7 @@ Este documento es la documentación para el talleR de coloR en el gRupo madRid R
 
 <http://madrid.r-es.org/>
 
-y que es una evolución del impartido dentro de las jornadas R-hispano 2014:
-
-<http://r-es.org/item1151?structure=Comunidad&from=VI+Jornadas>
+y que es una evolución del impartido dentro de las jornadas R-hispano 2014.
 
 Dado que el taller está dirigido a la comunidad R, todo el código está en este lenguaje, aunque intentaremos que las recomendaciones sean suficientemente generales para cualquier lenguaje que permita manejar el color. De hecho se añade un apéndice con enlaces a información relevante para python.
 
@@ -56,13 +54,13 @@ DOCUMENTACIÓN PREVIA
 DOCUMENTACIÓN DISPONIBLE EN INTERNET Y QUE USAREMOS EN EL TALLER
 
 - Tabla completa de colores y nombres en R 
-  <http://research.stowers-institute.org/efg/R/Color/Chart/ColorChart.pdf>
+  <http://research.stowers.org/mcm/efg/R/Color/Chart/ColorChart.pdf>
   
   obtenida a partir de esto:
-  <http://research.stowers-institute.org/efg/R/Color/Chart/ColorChart.R>
+  <http://research.stowers.org/mcm/efg/R/Color/Chart/ColorChart.R>
   
 - Using Color in R (ver "Los números del color")
-  <http://research.stowers-institute.org/efg/Report/UsingColorInR.pdf>
+  <http://research.stowers.org/mcm/efg/Report/UsingColorInR.pdf>
   
 - Maravillosa "cheatsheet" que es mucho más moderna y eficaz: 
   <https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf>
@@ -101,7 +99,7 @@ PREPARACIÓN DE ENTORNO R
 
 # Ojo pongo mi directorio de trabajo, tú pon el tuyo
 
-setwd("C:/Users/pedroc/Desktop/2014/repos-git-2014/taller-color")
+setwd("D:/2019/uned 2019/taller-color")
 
 
 
@@ -162,7 +160,9 @@ sos::findFn("{color}")
 
 ```
 
-En el momento de escribir estas líneas, la función anterior ha encontrado 357 funciones en 159 paquetes CRAN para estudiar o manejar color en R.
+En 2015, cuando escribí estas líneas, la función anterior encontró 357 funciones en 159 paquetes CRAN para estudiar o manejar color en R.
+
+En 2019 comprobarás que devuelve: "Too many documents hit".
 
 Tenemos por ejemplo la librería colorscience
 
@@ -214,7 +214,7 @@ colortools::adjacent("khaki")
 2. LOS NÚMEROS DEL COLOR
 ==========================
 
-Ver excelente presentación aquí: <http://research.stowers-institute.org/efg/Report/UsingColorInR.pdf>
+Ver excelente presentación aquí: <http://research.stowers.org/mcm/efg/Report/UsingColorInR.pdf>
 
 Pero hay una maravillosa "cheatsheet" que es mucho más moderna y eficaz: 
 <https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf>
@@ -316,8 +316,7 @@ pal(diverge_hcl(7, h = c(180, 330), c = 59, l = c(75, 95)))
 colorspace::choose_palette() UNA INTERFAZ GRÁFICA PARA ELEGIR PALETA
 
 ```{r}
-#kk <- choose_palette()
-#filled.contour(volcano, color.palette = kk, asp = 1)
+kk <- choose_palette()
 
 ```
 
@@ -341,10 +340,6 @@ Muy importante: sensibilidad relativa del Sistema Visual Humano en f. longitudes
 <http://en.wikipedia.org/wiki/Color_vision#mediaviewer/File:Eyesensitivity.svg>
 
 El color es un constructo humano, la luz tiene unas propiedades físicas y los objetos en los que se refleja otras y eso permite una estimulación en los receptores humanos, la interpretación de lo que llega a los receptores, su transporte y procesamiento en las zonas visuales del cerebro es lo que realmente percibimos como color, es en suma una interpretación de lo que nos llega.
-
-En Psicofísica se utilizan las ilusiones como herramienta de trabajo. Veamos una excelente representación de estas ilusiones de color:
-
-<http://www.purveslab.net/seeforyourself/>
 
 En la percepción de color tanto retina como córtex están involucrados, y gobernados por principios generales como la "constancia del color":
 
@@ -785,7 +780,7 @@ APENDICE COLORS IN THE COMPLEX DOMAIN
 ===================================================
 
 Como propone Antonio Sánchez Chinchón en su blog
-<https://aschinchon.wordpress.com/2014/10/01/complex-domain-coloring/>
+<https://fronkonstin.com/2014/10/01/complex-domain-coloring/>
 
 ```{r, fig.height=7, fig.width=10}
 
