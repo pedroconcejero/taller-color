@@ -1,7 +1,7 @@
 ---
 title: "talleR peRcepcion del coloR gRupo R madRid"
 author: "pedro.concejerocerezo at gmail.com"
-date: "Martes 3 marzo 2015 - revisado 26 abril 2019"
+date: "Martes 3 marzo 2015 - revisado 26-29 abril 2019"
 output: word_document
 ---
 
@@ -10,27 +10,21 @@ GRACIAS!!
 
 - A los asistentes a este talleR
 
-- A los organizadores de estas nuestras (maravillosas) Jornadas de Usuarios R (primer lugar donde se impartió este taller)
+- A los organizadores de estas nuestras (maravillosas) Jornadas de Usuarios R (primer lugar donde se impartió este taller). En 2019 celebraremos las undécimas jornadas en Madrid! <http://r-es.org/jornadas/>
 
 - A los miembros del comité científico que (inexplicablemente) aprobaron el taller
 
-- A José Antonio Collado, el experto sobre color autor de las recomendaciones y ejercicios y de la base teórica de este taller, pero que no ha podido asistir a las jornadas
+- A José Antonio Collado (<https://www.linkedin.com/in/jos%C3%A9-antonio-collado-17a7001b/?originalSubdomain=es>), el experto sobre color autor de las recomendaciones y ejercicios y de la base teórica de este taller, pero que no ha podido asistir a las jornadas
 
 - A José Luis Cañadas (<https://twitter.com/joscani>) por sus mapas (<http://rpubs.com/joscani/mapa_paro_andalucia>)
-
-- A Miguel Fiandor (<https://twitter.com/mfiandor>) por sus ejemplos enviados a la lista R-hispano, en concreto esta que comentaremos (criticaremos; aunque lamentablemente ahora en 2019 no se ve bien): <http://www.elconfidencial.com/espana/2014-08-07/nueve-de-cada-diez-municipios-tienen-mas-paro-ahora-que-antes-de-comenzar-la-crisis_172665/>
-
-- A Óscar Perpiñán (@oscarperpinan) por su ayuda sobre EBImage para convertir imagen a escala de grises.
 
 
 OBJETIVOS DE ESTE DOCUMENTO
 ========================================================
 
-Este documento es la documentación para el talleR de coloR en el gRupo madRid R:
+Este R markdown contiene la documentación para el talleR de coloR en el gRupo madRid R <http://madrid.r-es.org/>, más en concreto si buscáis por mi nombre lo encontraréis en la sesión del 3 de marzo de 2015, y es una evolución del impartido dentro de las jornadas R-hispano 2014 que se celebraron en Santiago de Compostela.
 
-<http://madrid.r-es.org/>
-
-y que es una evolución del impartido dentro de las jornadas R-hispano 2014.
+Este documento junto con todos los materiales del curso (incluidos algunos opcionales) se pueden descargar desde esta dirección github: <https://github.com/pedroconcejero/taller-color>.
 
 Dado que el taller está dirigido a la comunidad R, todo el código está en este lenguaje, aunque intentaremos que las recomendaciones sean suficientemente generales para cualquier lenguaje que permita manejar el color. De hecho se añade un apéndice con enlaces a información relevante para python.
 
@@ -155,14 +149,11 @@ Veamos qué librerías contienen color (sos levanta una página html fuera de RS
 
 ```{r}
 
-sos::findFn("{color}")
-
+#sos::findFn("colour", maxPages = 200)
 
 ```
 
-En 2015, cuando escribí estas líneas, la función anterior encontró 357 funciones en 159 paquetes CRAN para estudiar o manejar color en R.
-
-En 2019 comprobarás que devuelve: "Too many documents hit".
+En 2015, cuando escribí estas líneas, la función anterior encontró 357 funciones en 159 paquetes CRAN para estudiar o manejar color en R. En 2019 comprobarás que devuelve: "Too many documents hit" a no ser que pongas un límite a las páginas, y aun así la cantidad de resultados es enorme. 
 
 Tenemos por ejemplo la librería colorscience
 
@@ -316,7 +307,7 @@ pal(diverge_hcl(7, h = c(180, 330), c = 59, l = c(75, 95)))
 colorspace::choose_palette() UNA INTERFAZ GRÁFICA PARA ELEGIR PALETA
 
 ```{r}
-kk <- choose_palette()
+#kk <- choose_palette()
 
 ```
 
